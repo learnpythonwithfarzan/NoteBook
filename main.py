@@ -36,37 +36,45 @@ def save_window():
 
     save_file_button = Button(save_as_window, text='Save', bg='#1F4690', fg='#FFE5B4', height=1)
     save_file_button.config(font=main_text_font, padx=0, command=save)
-    save_file_button.grid(row=2, column=0, columnspan=2, sticky=E+W)
+    save_file_button.grid(row=2, column=0, columnspan=2, sticky=E + W)
 
-    save_as_window.resizable(False,  False)
+    save_as_window.resizable(False, False)
     save_as_window.geometry('200x100')
     save_as_window.mainloop()
 
 
 def load_window():
     def load():
-        read = open(file_entry.get(), 'r')
-        file_information = read.read()
-        main_text.delete(1.0, END)
-        main_text.insert(1.0, file_information)
-        filename_Label.config(text=file_entry.get())
-        load_file_window.destroy()
+        try:
+            read = open(file_entry.get(), 'r')
+        except:
+            error_label.config(text='can\'t find file with this name')
+        else:
+            file_information = read.read()
+            main_text.delete(1.0, END)
+            main_text.insert(1.0, file_information)
+            filename_Label.config(text=file_entry.get())
+            load_file_window.destroy()
 
     load_file_window = Tk()
     load_file_window.title('Load File')
-    load_file_window.config(bg='#231955', padx=0)
 
+    load_file_frame = Frame(load_file_window, bg='#231955', width=200, height=100)
+    load_file_frame.place(x=0, y=0)
     file_label = Label(load_file_window, text='File Name: ', bg='#1F4690', fg='#FFE5B4', width=9, height=1)
     file_label.config(font=main_text_font, padx=0)
-    file_label.grid(row=0, column=0)
+    file_label.pack(anchor=CENTER)
 
     file_entry = Entry(load_file_window, bg='#231955', fg='#FFE5B4', width=9)
     file_entry.config(font=main_text_font)
-    file_entry.grid(row=1, column=0)
+    file_entry.pack(anchor=CENTER)
 
-    load_file_button = Button(load_file_window, text='Save', bg='#1F4690', fg='#FFE5B4', height=1)
+    load_file_button = Button(load_file_window, text='Load', bg='#1F4690', fg='#FFE5B4', height=1)
     load_file_button.config(font=main_text_font, padx=0, command=load)
-    load_file_button.grid(row=2, column=0, columnspan=2, sticky=E + W)
+    load_file_button.pack(anchor=CENTER)
+
+    error_label = Label(load_file_window, text='', bg='#1F4690', fg='#FFE5B4', height=1)
+    error_label.pack(anchor=CENTER)
 
     load_file_window.resizable(False, False)
     load_file_window.geometry('200x100')
